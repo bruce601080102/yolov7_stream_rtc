@@ -1,0 +1,164 @@
+body{
+  background-color: rgb(14,17,23);
+}
+@media screen and (max-width: 1000px) {
+  .container {
+    max-width: 100%;
+    margin: 0 15px;
+  }
+
+  .col-half,
+  .col-quarter,
+  .col-three-quarters {
+    width: 100%;
+  }
+
+  .col-onethird {
+    width: 50%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .col-onethird {
+    width: 100%;
+  }
+}
+
+
+/* form */
+*:focus {
+  outline: none;
+}
+
+label {
+  display: inline-block;
+  max-width: 100%;
+  margin-bottom: 5px;
+  font-weight: 700;
+  color: gray;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  height: 36px;
+  padding: 6px 12px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #555;
+  background-color: rgba(255, 255, 255, .95);
+  border: 3px solid transparent;
+  border-color: rgba(0, 0, 0, .15);
+  transition: border-color .3s;
+
+  /* mobile */
+  box-shadow: none;
+  border-radius: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.form-control:focus {
+  border-color: skyblue;
+}
+
+/* navbar */
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.navbar {
+  background-color:  rgb(14,17,23);
+  /* border-bottom: 1px solid #eee; */
+  margin-bottom: 15px;
+  min-height: 44px;
+}
+
+.brand {
+  display: inline-block;
+  padding: 10px 0;
+  margin-top: 15px;
+  line-height: 24px;
+  color: #777;
+  font-weight: bold;
+  text-decoration: none;
+  transition: color .3s;
+  /* background-color: #555; */
+}
+
+.brand:hover,
+.brand:focus {
+  color: skyblue;
+}
+
+.navbar-menu {
+  float: right;
+}
+
+.navbar-menu>li {
+  display: inline-block;
+}
+
+.navbar-menu>li>a {
+  display: block;
+  padding: 10px 5px;
+  line-height: 24px;
+  color: #777;
+  text-decoration: none;
+  transition: color .3s;
+}
+
+.navbar-menu>li>a:hover,
+.navbar-menu>li>a:focus {
+  color: skyblue;
+}
+
+.button-toggle {
+  float: right;
+  display: none;
+  padding: 5px 10px;
+  margin: 5px 0;
+  line-height: 24px;
+  color: #777;
+  text-decoration: none;
+  transition: color .3s;
+  border: 1px solid #ccc;
+}
+
+@media screen and (max-width: 600px) {
+  .navbar-menu {
+    float: none;
+    display: none;
+  }
+
+  .navbar-menu.active {
+    display: block;
+  }
+
+  .navbar-menu>li {
+    display: block;
+  }
+
+  .button-toggle {
+    display: inline-block;
+  }
+  .brand{
+    margin-top: 0px;
+  }
+}
+
+
+iframe{
+  width: 100%;
+  border: none;
+  position: fixed;
+  height: 100%;
+  z-index: 0;
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+	<link href="./static/css/style.css" rel="stylesheet">
+	<script>
+		$(document).ready(function () {
+			$('.button-toggle').click(function (e) {
+				e.preventDefault();
+				$('.navbar-menu').toggleClass('active');
+			});
+		});
+		function setURL(url) {
+			document.getElementById('streamlit_content').src = url;
+			console.log('Works!')
+		  }
+	</script>
+</head>
+
+<body>
+	<div class="navbar">
+		<div class="container clearfix">
+			<a class="brand" href="#">
+				成果展示
+			</a>
+			<a href="#" class="button-toggle">
+				三
+			</a>
+			<ul class="navbar-menu">
+				<li>
+					<a href="#" onclick="setURL('https://bruce-2.dev.hitrustai.com/?p=vpn')">VPN急速啟動展示</a>
+				</li>
+				<li>
+					<a href="#" onclick="setURL('https://bruce-2.dev.hitrustai.com/?p=vedio')">錄影影片上傳展示</a>
+				</li>
+
+			</ul>
+		</div>
+	</div>
+	<iframe src="https://bruce-2.dev.hitrustai.com/?p=home" id="streamlit_content" allowfullscreen frameborder="0"
+    wmode="transparent" allowTransparency="true" allow="camera;microphone">
+    Your browser doesn't support iframes
+  	</iframe>
+
+</body>
+
+</html>

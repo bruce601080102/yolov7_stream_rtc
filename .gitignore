@@ -1,0 +1,11 @@
+*.weights
+.ipynb_checkpoints
+__pycache__
+traced_model.pt
+stream/yolo/weight/crop/best.onnx
+stream/yolo/weight/crop/best.torchscript.pt
+stream/yolo/weight/seg/best.onnx
+*.engine
+yolov7.pt
+yolov7-tiny.pt
+# *.pt

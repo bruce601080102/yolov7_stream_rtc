@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package numproto.protobuf;
+
+service GrpcService {
+    rpc ndarray (Input) returns (Coordinate) {}  //一個服務中可以定義多個介面，也就是多個函式功能
+}
+
+message Input {
+    bytes ndarray = 1;   //數字1,2是引數的位置順序，並不是對引數賦值
+    int32 width = 2;
+    int32 height = 3;
+
+};
+
+message NDArray {
+    bytes ndarray = 1;
+}
+
+message Coordinate {
+    int32 coordinate = 1;
+}
