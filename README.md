@@ -1,6 +1,6 @@
 ### 開始
 ```
-https://github.com/bruce601080102/yolov7_stream_rtc.git
+git clone https://github.com/bruce601080102/yolov7_stream_rtc.git
 ```
 
 ### pt下載
