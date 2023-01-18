@@ -58,7 +58,8 @@ if navigation() == "home":
         if genre == "常見物件偵測":
             img = yp.predict_default(img)
         else:
-            img = yp.predict(img)
+            # img = yp.predict(img)
+            img = yp.predict_trt(img)
         with lock:
             img_container["img"] = img
             fruit_dict = {
@@ -126,7 +127,8 @@ elif navigation() == "vpn":
         if genre == "常見物件偵測":
             img = yp.predict_default(img)
         else:
-            img = yp.predict(img)
+            # img = yp.predict(img)
+            img = yp.predict_trt(img)
         with lock:
             img_container["img"] = img
             fruit_dict = {

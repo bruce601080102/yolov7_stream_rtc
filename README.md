@@ -1,6 +1,10 @@
 ### 開始
 ```
 git clone https://github.com/bruce601080102/yolov7_stream_rtc.git
+
+pip3 install -r requirement.txt
+
+pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu113
 ```
 
 ### pt下載
