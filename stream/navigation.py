@@ -38,13 +38,20 @@ result_queue: queue.Queue = (
 if navigation() == "home":
     st.warning('啟動相機速度會較久一點,可以移至vpn展示頁面', icon="⚠️")
 
-
-    genre = st.radio(
-        "選擇模式 👇",
-        ["常見物件偵測", "車牌辨識"],
-        key="visibility",
-        horizontal=True,
-    )
+    col1, col2 = st.columns((3, 1))
+    with col1:
+        genre = st.radio(
+            "選擇模式 👇",
+            ["常見物件偵測", "車牌辨識"],
+            key="visibility",
+            horizontal=True,
+        )
+    with col2:
+        if genre == "車牌辨識":
+            option_size = st.selectbox(
+                "選擇辨識車牌數量",
+                ("1", "2", "3", "4", "5", "6", "7", "8", "9")
+            )
 
     lock = threading.Lock()
     img_container = {"img": None}
@@ -53,18 +60,19 @@ if navigation() == "home":
     def video_frame_callback(frame):
         global a
         img = frame.to_ndarray(format="bgr24")
-        # print(type(frame), img.shape)
 
         if genre == "常見物件偵測":
-            img = yp.predict_default(img)
+            img, fps = yp.predict_default(img)
         else:
             # img = yp.predict(img)
-            img = yp.predict_trt(img)
+            img, fps = yp.predict_trt(img, int(option_size))
         with lock:
+
             img_container["img"] = img
             fruit_dict = {
                 "width": img.shape[0],
-                "height": img.shape[1]
+                "height": img.shape[1],
+                "fps":fps
             }
             df = pd.DataFrame([fruit_dict], index=["pixel"])
             result_queue.put(df) 
@@ -74,12 +82,7 @@ if navigation() == "home":
         key="example",
         mode=WebRtcMode.SENDRECV,
         rtc_configuration=RTC_CONFIGURATION,
-        media_stream_constraints={"video": {
-                                    "width": {"min": 640, "ideal": 4096 / 2},
-                                    "height": {"min": 480, "ideal": 2304 / 2},
-                                    "aspectRatio": 1.777777778,
-                                    "frameRate": {"min": 20},
-                                    }, 
+        media_stream_constraints={"video": True, 
                                   "audio": False},
         async_processing=False,
         video_frame_callback=video_frame_callback,
@@ -110,12 +113,20 @@ if navigation() == "home":
 elif navigation() == "vpn":
     st.warning('需要使用專用的vpn才能啟動', icon="⚠️")
 
-    genre = st.radio(
-        "選擇模式 👇",
-        ["常見物件偵測", "車牌辨識"],
-        key="visibility",
-        horizontal=True,
-    )
+    col1, col2 = st.columns((3, 1))
+    with col1:
+        genre = st.radio(
+            "選擇模式 👇",
+            ["常見物件偵測", "車牌辨識"],
+            key="visibility",
+            horizontal=True,
+        )
+    with col2:
+        if genre == "車牌辨識":
+            option_size = st.selectbox(
+                "選擇辨識車牌數量",
+                ("1", "2", "3", "4", "5", "6", "7", "8", "9")
+            )
 
     lock = threading.Lock()
     img_container = {"img": None}
@@ -125,15 +136,16 @@ elif navigation() == "vpn":
         # print(type(frame), img.shape)
 
         if genre == "常見物件偵測":
-            img = yp.predict_default(img)
+            img, fps = yp.predict_default(img)
         else:
             # img = yp.predict(img)
-            img = yp.predict_trt(img)
+            img, fps = yp.predict_trt(img, int(option_size))
         with lock:
             img_container["img"] = img
             fruit_dict = {
                 "width": img.shape[0],
-                "height": img.shape[1]
+                "height": img.shape[1],
+                "fps":fps
             }
             df = pd.DataFrame([fruit_dict], index=["pixel"])
             result_queue.put(df) 

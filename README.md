@@ -16,7 +16,7 @@ wget https://github.com/WongKinYiu/yolov7/releases/download/v0.1/yolov7.pt
 
 ### 串流執行
 ```sh
-python -m streamlit run navigation.py --server.port 9998 --server.enableCORS=false
+python3 -m streamlit run navigation.py --server.port 9998 --server.enableCORS=false
 ```
 本地網址:http://localhost:9998
 
@@ -36,9 +36,6 @@ export STREAMLIT_RUN_FILE_OR_URL=navigation.py
 ## Tensor-RT生成
 - 執行以下命令集會生成出engine文件,一個環境只能生出對應的engine,因此更換環境需要重新生成
 ```sh
-apt-get update
-
-apt-get install tensorrt
 
 cd stream/output_rt
 

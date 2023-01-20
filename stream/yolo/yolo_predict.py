@@ -30,13 +30,7 @@ class YoloPredict:
     def init_model(self):
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         weights_crop = ['yolo/weight/crop/best.pt']
-        try:
-            model_crop = attempt_load(weights_crop, map_location=self.device)
-        
-        except RuntimeError as exception:
-            if "out of memory" in str(exception):
-                torch.cuda.empty_cache()
-                model_crop = attempt_load(weights_crop, map_location=self.device)
+        model_crop = attempt_load(weights_crop, map_location=self.device)
             
         self.stride_crop = int(model_crop.stride.max())
         
@@ -78,9 +72,10 @@ class YoloPredict:
         return model_crop, model_seg, model_rec, model_defaut
 
     def init_trt(self):
+        self.trt_engine = TRT_engine("output_rt/best1.engine")
+        self.trt_engine2 = TRT_engine("output_rt/best2.engine")
         try:
-            self.trt_engine = TRT_engine("output_rt/engine/best1.engine")
-            self.trt_engine2 = TRT_engine("output_rt/engine/best2.engine")
+            
             print("trt初始化成功")
         except Exception:
             print("尚未安裝trt")
@@ -139,7 +134,6 @@ class YoloPredict:
             "label": list(),
             "color": list(),
         }
-        print(pred)
         for i, det in enumerate(pred):
             if len(det):
                 det[:, :4] = scale_coords(img.shape[2:], det[:, :4], origin_img.shape).round()
@@ -193,22 +187,26 @@ class YoloPredict:
         # print("predict : " + str(LABEL_DICT[predict]))
         return str(self.LABEL_DICT[predict])
 
-    def predict_yolo_rt(self, rt_infer, origin_img):
+    def predict_yolo_rt(self, rt_infer, origin_img, size=8):
         output = {
             "box": list(),
             "image": list(),
         }
-        pred = rt_infer.predict(origin_img, threshold=0.5)
-        pred = torch.Tensor(pred)
-        pred = [pred[pred[:, 2].sort(descending=True)[1]]]
-        
-        for i, det in enumerate(pred):
-            if len(det):
-                for conf, cls, *xyxy in reversed(det):
-                    c1, c2 = (int(xyxy[0]), int(xyxy[1])), (int(xyxy[2]), int(xyxy[3]))
-                    output["box"].append([c1, c2])
-                    output["image"].append(origin_img[c1[1]:c2[1], c1[0]:c2[0]])
-
+        try:
+            pred = rt_infer.predict(origin_img, threshold=0.5)
+            pred = torch.Tensor(pred)
+            pred = [pred[pred[:, 2].sort(descending=True)[1]]]
+            for i, det in enumerate(pred):
+                if len(det):
+                    for conf, cls, *xyxy in reversed(det):
+                        c1, c2 = (int(xyxy[0]), int(xyxy[1])), (int(xyxy[2]), int(xyxy[3]))
+                        output["box"].append([c1, c2])
+                        output["image"].append(origin_img[c1[1]:c2[1], c1[0]:c2[0]])
+                        output["box"] = output["box"]
+                        output["image"] = output["image"][:size]
+        except Exception as e:
+            print("-----------err")
+            print(e)
         return output
 
     def predict(self, origin_img):
@@ -287,10 +285,14 @@ class YoloPredict:
                             thickness)
         except Exception as e:
             print(e)
-        return origin_img
+        end = time.time()
+        fps = int(1 / (end-start))
+        return origin_img, fps
 
-    def predict_trt(self, origin_img):
-        crop_output = self.predict_yolo_rt(self.trt_engine, origin_img)
+    def predict_trt(self, origin_img, size=5):
+        # cv2.imwrite('python_grey.png',origin_img)
+        t1 = time.time()
+        crop_output = self.predict_yolo_rt(self.trt_engine, origin_img, size=size)
         if crop_output["box"] != []:
             labels = list()
             for index, crop_img in enumerate(crop_output["image"]):
@@ -301,10 +303,12 @@ class YoloPredict:
                 # predict the word
                 rec_output = ""
                 for seg_img in seg_output["image"]:
-                    rec_output += self.predict_rec(seg_img)
+                    try:
+                        rec_output += self.predict_rec(seg_img)
+                    except Exception:
+                        print("抓不到框")
                 labels.append(rec_output)
             for crop_box, label in zip(crop_output["box"], labels):
-                
                 x1, y1, x2, y2 = crop_box[0][0], crop_box[0][1], crop_box[1][0], crop_box[1][1]
 
                 fontFace = cv2.FONT_HERSHEY_COMPLEX
@@ -326,7 +330,9 @@ class YoloPredict:
                             fontScale,
                             (0, 0, 0),
                             thickness)
-        return origin_img
+        t2 = time.time()
+        fps = int(1 / (t2-t1))
+        return origin_img, fps
 
 
 
