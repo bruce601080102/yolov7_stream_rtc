@@ -48,5 +48,14 @@ mkdir engine
 
 ## DEMO
 
-![image](./images/animation.gif)
 
+<table border="3" align="center">
+    <tr>
+        <th>Default Demo</th>
+        <th>PlateLicense Demo</th>
+    </tr>
+    <tr>
+        <td><img src="./images/animation.gif" alt="" height=200 width=200 /></td>
+        <td><img src="./images/PlateLicense.gif" alt="" height=200 width=200 /></td>
+    </tr>
+</table>
