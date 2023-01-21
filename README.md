@@ -14,6 +14,7 @@ cd yolov7_stream_rtc/docker
 ### step2:進入容器內
 ```sh
 docker exec -it mydeepstream:v2 bash
+
 cd /opt/nvidia/deepstream/deepstream-6.1/commonFolder/Github/yolov7_stream_rtc
 
 pip3 install -r requirement.txt
@@ -22,7 +23,7 @@ pip3 install torch torchvision torchaudio --extra-index-url https://download.pyt
 ```
 ### step2-1:內置zsh
 ```sh
-./build_zsh.sh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/bruce601080102/yolov7_stream_rtc/main/docker/build_zsh.sh)" 
 ```
 
 
