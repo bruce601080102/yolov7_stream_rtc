@@ -9,6 +9,7 @@ RUN pip3 install jupyter && \
     apt-get install openssh-server && \
     apt-get install supervisor  && \
     apt install gunicorn -y
+RUN supervisord -c /etc/supervisor/supervisord.conf
 
 RUN mkdir /root/log
 
