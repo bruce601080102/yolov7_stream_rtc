@@ -1,16 +1,39 @@
-### 開始
-```
+### step1:開始
+```sh
+mkdir Github
+
+cd Github
+
 git clone https://github.com/bruce601080102/yolov7_stream_rtc.git
+
+cd yolov7_stream_rtc/docker
+
+./build.sh
+```
+
+### step2:進入容器內
+```sh
+docker exec -it mydeepstream:v2 bash
+cd /opt/nvidia/deepstream/deepstream-6.1/commonFolder/Github/yolov7_stream_rtc
 
 pip3 install -r requirement.txt
 
 pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu113
 ```
+### step2-1:內置zsh
+```sh
+./build_zsh.sh
+```
+
 
 ### pt下載
 ```sh
+cd /opt/nvidia/deepstream/deepstream-6.1/commonFolder/Github/yolov7_stream_rtc
+
 mkdir stream/yolo/weight/default
+
 cd stream/yolo/weight/default
+
 wget https://github.com/WongKinYiu/yolov7/releases/download/v0.1/yolov7.pt
 ```
 
@@ -35,6 +58,7 @@ export STREAMLIT_RUN_FILE_OR_URL=navigation.py
 
 ## Tensor-RT生成
 - 執行以下命令集會生成出engine文件,一個環境只能生出對應的engine,因此更換環境需要重新生成
+- `zsh環境下無法使用,需切回bash`
 ```sh
 
 cd stream/output_rt
