@@ -55,7 +55,7 @@ mkdir engine
         <th>PlateLicense Demo</th>
     </tr>
     <tr>
-        <td><img src="./images/animation.gif" alt="" height=200 width=200 /></td>
-        <td><img src="./images/PlateLicense.gif" alt="" height=200 width=200 /></td>
+        <td><img src="./images/animation.gif" alt="" height=400 width=200 /></td>
+        <td><img src="./images/PlateLicense.gif" alt="" height=400 width=200 /></td>
     </tr>
 </table>
